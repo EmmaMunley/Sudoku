@@ -28,7 +28,7 @@ const getRow = (puzzle, rowIndex) => {
 
 const getColumn = (puzzle, columnIndex) => {
     let array = [];
-    for (i = 0; i < puzzle.length; i++) {
+    for (let i = 0; i < puzzle.length; i++) {
         array.push(puzzle[i][columnIndex]);
     }
     return array;
@@ -76,8 +76,8 @@ const includes1to9 = (arr) => {
     let isValid = false;
     const isValidSet = [1,2,3,4,5,6,7,8,9];
 
-    for (let k = 0; k< arr.length; k++) {
-          let currentNum= arr[k];
+    for (let i = 0; k< arr.length; i++) {
+          let currentNum= arr[i];
           newSet.add(currentNum);
     }
     if (isValidSet.length === newSet.size) {
