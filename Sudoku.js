@@ -1,26 +1,4 @@
-let puzzle1 = [[ 8,9,5,   7,4,2,   1,3,6 ],
-              [ 2,7,1,   9,6,3,   4,8,5 ],
-              [ 4,6,3,   5,8,1,   7,9,2 ],
-
-              [ 9,3,4,   6,1,7,   2,5,8 ],
-              [ 5,1,7,   2,3,8,   9,6,4 ],
-              [ 6,8,2,   4,5,9,   3,7,1 ],
-
-              [ 1,5,9,   8,7,4,   6,2,3 ],
-              [ 7,4,6,   3,2,5,   8,1,9 ],
-              [ 3,2,8,   1,9,6,   5,4,7 ]];
-
-let puzzle2 =  [[ 8,9,5,7,4,2,1,3,6 ],
-                [ 8,7,1,9,6,3,4,8,5 ],
-                [ 4,6,3,5,8,1,7,9,2 ],
-                [ 9,3,4,6,1,7,2,5,8 ],
-                [ 5,1,7,2,3,8,9,6,4 ],
-                [ 6,8,2,4,5,9,3,7,1 ],
-                [ 1,5,9,8,7,4,6,2,3 ],
-                [ 7,4,6,3,2,5,8,1,9 ],
-                [ 3,2,8,1,9,6,5,4,8 ]];
-
-const isValidSet = [1,2,3,4,5,6,7,8,9];
+const { puzzle1, puzzle2, puzzle3, puzzle4, puzzle5} = require('./puzzleExamples');
 
 const getRow = (puzzle, rowIndex) => {
     return puzzle[rowIndex];
@@ -49,72 +27,81 @@ const getSection = (puzzle,x, y) => {
 
 
 const getPuzzle = (puzzle) => {
-  let gridColumns = [];
-  let gridRows = [];
-  let gridSections = [];
+    let gridColumns = [];
+    let gridRows = [];
+    let gridSections = [];
 
-  for (let i = 0; i < puzzle.length; i++) {
-    let column = getColumn(puzzle,i);
-    let row = getRow(puzzle, i);
+    for (let i = 0; i < puzzle.length; i++) {
+      let column = getColumn(puzzle,i);
+      let row = getRow(puzzle, i);
 
-    gridColumns.push(column);
-    gridRows.push(row)
+      gridColumns.push(column);
+      gridRows.push(row)
+    }
+
+    for (let i = 0; i < 3 ; i++) {
+        for (let j = 0; j < 3; j++) {
+          let section = getSection(puzzle,[i],[j]);
+          gridSections.push(section);  
+        }
+    }
+    
+    return [gridColumns, gridRows, gridSections]
   }
 
-  for (let i = 0; i < 3 ; i++) {
-    for (let j = 0; j < 3; j++) {
-    let section = getSection(puzzle,[i],[j]);
-    gridSections.push(section);  
+
+  const includes1to9 = (arr) => {
+    const newSet = new Set();
+    for (let i = 0; i < arr.length; i++) {
+      const currentNum = arr[i];
+      if (currentNum === '') {
+        continue;
+      }
+      if (typeof currentNum !== 'number'
+          || currentNum <1 || currentNum >9
+          || !Number.isInteger(currentNum) )  {
+        return false
+      }
+      if (newSet.has(currentNum)){
+        return false
+      }
+
+      newSet.add(currentNum)
     }
-  }
-  return [gridColumns, gridRows, gridSections]
+    return true;
 }
-
-
-const includes1to9 = (arr) => {
-    let newSet = new Set();
-    let isValid = false;
-    const isValidSet = [1,2,3,4,5,6,7,8,9];
-
-    for (let i = 0; k< arr.length; i++) {
-          let currentNum= arr[i];
-          newSet.add(currentNum);
-    }
-    if (isValidSet.length === newSet.size) {
-            isValid = true;
-    }
-   return isValid;
-}
-
 
 const validatePuzzle = (puzzle) => {
   const allGrids = (getPuzzle(puzzle));
-  let isValid = false;
 
   for (let i = 0; i < allGrids.length; i++) {
-    let grid = allGrids[i];
-    for (let j = 0; j < grid.length; j++) {
-        let currentArray = grid[j];
-      if (!includes1to9(currentArray)) {
-        return false;
+      let grid = allGrids[i];
+      for (let j = 0; j < grid.length; j++) {
+          let currentArray = grid[j];
+          if (!includes1to9(currentArray)) {
+            return false;
+          }
       }
-    }
   }
   return true;
 }
-
-console.log(validatePuzzle(puzzle1));
+/* console.log(validatePuzzle(puzzle1));
 console.log(validatePuzzle(puzzle2));
+console.log(validatePuzzle(puzzle3));
+console.log(validatePuzzle(puzzle4));
+console.log(validatePuzzle(puzzle5)); */
 
-
-const isSameArray = (puzzle1, puzzle2) => {
-    for (let i = 0; i < 9; i++) {
-      if (puzzle1[i] !== puzzle2[i]) {
+const isSameArray = (array1, array2) => {
+    if (array1.length !== array2.length) {
+      return false
+    }
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) {
         return false
       }
     }
     return true;
-  }
+}
   
   const isSame = (puzzle1, puzzle2) => {
     for (let i = 0; i < 9; i++) {
@@ -129,3 +116,4 @@ const isSameArray = (puzzle1, puzzle2) => {
   }
   
   console.log(isSame(puzzle1,puzzle2));
+  console.log(isSame(puzzle4,puzzle5));
